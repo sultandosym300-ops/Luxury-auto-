@@ -1,0 +1,274 @@
+BLACKLINE AUTO STUDIO must be rebuilt as a true premium automotive service platform, not a landing page with random sections.
+
+The current project feels like a prototype.
+
+I want a production-grade luxury customer experience comparable to Lamborghini, Porsche Exclusive Manufaktur, McLaren, Tesla, Rivian and high-end concierge automotive brands.
+
+CRITICAL REQUIREMENTS:
+
+NO FAKE DATA ANYWHERE.
+
+Do not display:
+
+* fake customers
+* fake bookings
+* fake revenue
+* fake analytics
+* fake activity feeds
+* fake appointments
+* fake testimonials
+
+If there is no data in the database, show professional empty states.
+
+Example:
+
+"No appointments scheduled yet."
+
+instead of fake numbers.
+
+====================================================
+LUXURY EXPERIENCE
+=================
+
+The website must feel cinematic.
+
+Implement premium motion design:
+
+* smooth page transitions
+* scroll based animations
+* parallax photography
+* staggered text reveals
+* luxury hover effects
+* animated image transitions
+* premium loading screens
+* section reveal animations
+
+Animation quality should feel comparable to Lamborghini and Apple websites.
+
+Avoid generic fade-ins.
+
+Every animation must feel intentional and expensive.
+
+====================================================
+CUSTOMER PORTAL
+===============
+
+Create a secure customer account system.
+
+After booking, customers must have access to:
+
+MY GARAGE
+
+Each customer can own multiple vehicles.
+
+Vehicle page includes:
+
+* make
+* model
+* year
+* color
+* VIN
+* service history
+* coating installation date
+* PPF installation date
+* before/after photos
+* recommendations
+
+Customers should feel like their vehicle has a digital service record.
+
+====================================================
+BOOKING EXPERIENCE
+==================
+
+Booking flow must be completely redesigned.
+
+After successful booking:
+
+Generate booking reference.
+
+Example:
+
+BL-2026-1048
+
+Show premium confirmation page.
+
+Display:
+
+* service
+* vehicle
+* technician
+* appointment date
+* appointment time
+* booking reference
+
+Add countdown until appointment.
+
+Example:
+
+"Appointment begins in 12 days."
+
+====================================================
+STATUS TRACKING
+===============
+
+Customers must be able to track vehicle status.
+
+Statuses:
+
+Quote Requested
+Scheduled
+Vehicle Received
+Preparation
+In Progress
+Quality Inspection
+Ready For Pickup
+Completed
+
+Show visual progress timeline.
+
+====================================================
+NOTIFICATIONS
+=============
+
+Build notification system.
+
+Customers receive notifications for:
+
+* booking confirmed
+* appointment reminder
+* vehicle received
+* service completed
+* vehicle ready for pickup
+
+Create database structure for notifications.
+
+====================================================
+ADMIN SYSTEM
+============
+
+Admin access must NEVER be publicly visible.
+
+Remove Admin link from public navigation.
+
+Admin route only accessible by:
+
+* authenticated admin
+* role verification
+
+No public create-admin button.
+
+====================================================
+ADMIN DASHBOARD
+===============
+
+Admin must have full control.
+
+Create CRUD management for:
+
+SERVICES
+
+* add service
+* edit service
+* delete service
+* enable/disable service
+* update pricing
+* update duration
+
+TECHNICIANS
+
+* add technician
+* edit technician
+* delete technician
+* availability management
+
+VEHICLES
+
+* edit customer vehicles
+* update service history
+
+BOOKINGS
+
+* change status
+* assign technician
+* reschedule appointments
+
+LEADS
+
+* manage quote requests
+
+MEDIA
+
+* upload portfolio photos
+* upload before/after images
+
+====================================================
+REAL ANALYTICS
+==============
+
+Analytics must use real database data only.
+
+Metrics:
+
+* revenue today
+* revenue month
+* total customers
+* active bookings
+* completed jobs
+* lead conversion rate
+
+No hardcoded values.
+
+====================================================
+ADMIN SETTINGS
+==============
+
+Admin can modify:
+
+* business hours
+* booking intervals
+* blackout dates
+* service pricing
+* homepage content
+* contact information
+* notification templates
+
+Without touching code.
+
+====================================================
+PORTFOLIO
+=========
+
+Portfolio must be CMS driven.
+
+Admin uploads projects.
+
+Each project includes:
+
+* vehicle
+* year
+* services
+* images
+* completion date
+
+No hardcoded portfolio entries.
+
+====================================================
+FINAL REQUIREMENT
+=================
+
+Before claiming completion:
+
+1. Verify every route.
+2. Verify every database query.
+3. Verify every booking action.
+4. Verify admin authentication.
+5. Verify customer authentication.
+6. Verify all CRUD operations.
+7. Verify mobile responsiveness.
+8. Verify no fake data exists.
+9. Verify all animations work smoothly.
+10. Verify the application builds successfully.
+
+Do not tell me what you plan to do.
+
+Implement and verify everything.

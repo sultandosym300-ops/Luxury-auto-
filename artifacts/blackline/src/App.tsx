@@ -7,6 +7,9 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Quote from "@/pages/Quote";
 import Booking from "@/pages/Booking";
+import Track from "@/pages/Track";
+import Portal from "@/pages/Portal";
+import Garage from "@/pages/Garage";
 
 import AdminLayout from "@/components/layout/AdminLayout";
 import AdminLogin from "@/pages/admin/AdminLogin";
@@ -16,6 +19,8 @@ import CustomersList from "@/pages/admin/CustomersList";
 import ServicesList from "@/pages/admin/ServicesList";
 import TechniciansList from "@/pages/admin/TechniciansList";
 import Analytics from "@/pages/admin/Analytics";
+import Portfolio from "@/pages/admin/Portfolio";
+import Settings from "@/pages/admin/Settings";
 
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -32,6 +37,8 @@ function AdminRoutes() {
         <Route path="/admin/services" component={ServicesList} />
         <Route path="/admin/technicians" component={TechniciansList} />
         <Route path="/admin/analytics" component={Analytics} />
+        <Route path="/admin/portfolio" component={Portfolio} />
+        <Route path="/admin/settings" component={Settings} />
         <Route component={NotFound} />
       </Switch>
     </AdminLayout>
@@ -47,6 +54,10 @@ function PublicRoutes() {
           <Route path="/" component={Home} />
           <Route path="/quote" component={Quote} />
           <Route path="/booking" component={Booking} />
+          <Route path="/track/:reference?" component={Track} />
+          <Route path="/portal" component={Portal} />
+          <Route path="/portal/garage" component={Garage} />
+          <Route path="/portal/garage/:id" component={Garage} />
           <Route component={NotFound} />
         </Switch>
       </main>
