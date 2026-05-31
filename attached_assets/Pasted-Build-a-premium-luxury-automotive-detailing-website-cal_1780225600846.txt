@@ -1,0 +1,191 @@
+Build a premium luxury automotive detailing website called BLACKLINE AUTO STUDIO.
+
+IMPORTANT:
+I do NOT want a generic AI-generated website.
+I do NOT want a template.
+I do NOT want placeholder sections.
+I do NOT want a startup landing page.
+
+I want a website that looks like a custom agency project worth $5,000-$15,000.
+
+Tech Stack:
+- React
+- Vite
+- Tailwind CSS
+- Framer Motion
+- React Router
+
+Focus on DESIGN QUALITY first.
+
+=========================================
+VISUAL DIRECTION
+=========================================
+
+Design inspiration:
+
+- Porsche
+- Lamborghini
+- Tesla
+- Pagani
+- Singer Vehicle Design
+- Apple
+- Linear
+
+Style:
+
+- Dark luxury
+- Minimal
+- Cinematic
+- Premium
+- Masculine
+- High-end
+
+Colors:
+
+Background: #070707
+Cards: #111111
+Borders: #1A1A1A
+Primary Text: #F5F5F5
+Secondary Text: #8A8A8A
+Accent: #C9A86A
+
+Requirements:
+
+- Massive whitespace
+- Beautiful typography
+- Smooth animations
+- Premium hover effects
+- Large imagery
+- Elegant layouts
+- No cheap gradients
+- No glassmorphism
+- No generic Tailwind cards
+- No obvious AI-generated sections
+
+The entire experience should feel handcrafted.
+
+=========================================
+LANDING PAGE
+=========================================
+
+Create a world-class homepage.
+
+Sections:
+
+1. Cinematic Hero
+- Full-screen layout
+- Luxury automotive imagery
+- Premium headline
+- Premium CTA buttons
+- Animated statistics
+
+2. Services
+- PPF
+- Ceramic Coating
+- Paint Correction
+- Window Tint
+- Full Detail
+- Interior Restoration
+
+Each service should have:
+- Description
+- Benefits
+- Starting price
+- Estimated duration
+
+3. Portfolio
+- Large gallery
+- Luxury project cards
+- Before/After comparison layouts
+- Featured vehicle projects
+
+4. Why Choose Us
+- Trust-building section
+- Premium presentation
+
+5. Testimonials
+- High-end customer reviews
+
+6. Quote CTA
+
+=========================================
+QUOTE CALCULATOR
+=========================================
+
+Create a premium multi-step calculator.
+
+Vehicle Types:
+- Sedan
+- Coupe
+- SUV
+- Truck
+- Exotic
+
+Services:
+- PPF
+- Ceramic
+- Tint
+- Paint Correction
+- Detailing
+
+Vehicle Condition:
+- Excellent
+- Good
+- Moderate
+- Heavy Correction
+
+Show:
+
+- Estimated price
+- Recommended package
+- Estimated duration
+
+Make this section visually impressive.
+
+=========================================
+BOOKING EXPERIENCE
+=========================================
+
+Create a luxury booking interface.
+
+User flow:
+
+- Select service
+- Select preferred technician
+- Select date
+- Select time
+- Submit request
+
+The interface must feel premium and modern.
+
+=========================================
+ADMIN AREA
+=========================================
+
+Create admin architecture and routes but DO NOT build fake authentication.
+
+Prepare structure for:
+
+/admin
+/admin/dashboard
+/admin/bookings
+/admin/customers
+/admin/services
+/admin/technicians
+/admin/analytics
+
+=========================================
+IMPORTANT
+=========================================
+
+Prioritize design quality over backend complexity.
+
+I want visitors to immediately think:
+
+"This company looks expensive."
+
+Before generating code:
+
+Think like a top-tier web design agency.
+
+The website should be impressive enough to sell to a real detailing company in the United States for several thousand dollars.

@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "zH3OSL6i86XPCzY7Xps7i"
+uri = "file://artifacts/blackline/src/assets/hero.png"
+type = "image"
+title = "Hero image Porsche 911"
+
+[[generated]]
+id = "_u_5F_UcYqTA1Rh9yyJYL"
+uri = "file://artifacts/blackline/src/assets/portfolio-1.png"
+type = "image"
+title = "McLaren 720S PPF"
+
+[[generated]]
+id = "DOz9PSYXPBnx1ax8FZHEe"
+uri = "file://artifacts/blackline/src/assets/portfolio-2.png"
+type = "image"
+title = "Lamborghini Huracan ceramic"
+
+[[generated]]
+id = "NRuIoj1vx8lRNoUMPUxwM"
+uri = "file://artifacts/blackline/src/assets/portfolio-3.png"
+type = "image"
+title = "Rolls Royce Ghost interior"
+
+[[generated]]
+id = "z_p0OqKfIaKswM_wapDum"
+uri = "file://artifacts/blackline/src/assets/portfolio-4.png"
+type = "image"
+title = "Ferrari Roma paint correction"
+
+[[generated]]
+id = "K46chr9doXdQfXGa5fBQi"
+uri = "file://artifacts/blackline/src/assets/cta.png"
+type = "image"
+title = "CTA Porsche microfiber"
