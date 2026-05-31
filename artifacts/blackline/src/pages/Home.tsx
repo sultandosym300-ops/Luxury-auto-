@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 
 import heroImg from "@/assets/hero.png";
@@ -8,264 +9,448 @@ import port3 from "@/assets/portfolio-3.png";
 import port4 from "@/assets/portfolio-4.png";
 import ctaImg from "@/assets/cta.png";
 
-const services = [
+// ─── data ───────────────────────────────────────────────────────────────────
+
+const SERVICES = [
   {
-    name: "Paint Protection Film (PPF)",
-    desc: "Full-body armor against chips, scratches, and road debris.",
-    benefits: ["Self-healing technology", "10-year warranty", "Invisible finish"],
+    num: "01",
+    name: "Paint Protection Film",
+    abbr: "PPF",
+    desc: "Full-body armor against chips, scratches, and road debris. Self-healing film that keeps your paint flawless for a decade.",
+    benefits: ["Self-healing technology", "10-year manufacturer warranty", "Completely invisible finish"],
     price: "$2,500",
-    duration: "3-5 days"
+    duration: "3–5 days",
   },
   {
+    num: "02",
     name: "Ceramic Coating",
-    desc: "Permanent hydrophobic protection with mirror-like gloss.",
-    benefits: ["Extreme gloss", "Chemical resistance", "UV protection"],
+    abbr: "CERAMIC",
+    desc: "Permanent hydrophobic protection that bonds at the molecular level, delivering mirror-like gloss and chemical resistance.",
+    benefits: ["Extreme depth of gloss", "Chemical & UV resistance", "Hydrophobic water beading"],
     price: "$1,200",
-    duration: "1-2 days"
+    duration: "1–2 days",
   },
   {
+    num: "03",
     name: "Paint Correction",
-    desc: "Multi-stage swirl removal and paint restoration to showroom perfection.",
-    benefits: ["Removes 95%+ of defects", "Restores clarity", "Prepares for coating"],
+    abbr: "CORRECTION",
+    desc: "Multi-stage machine polishing that removes swirl marks, scratches, and oxidation to restore showroom clarity.",
+    benefits: ["Removes 95%+ of surface defects", "Restores true paint clarity", "Prepares for ceramic coating"],
     price: "$800",
-    duration: "1-3 days"
+    duration: "1–3 days",
   },
   {
+    num: "04",
     name: "Window Tint",
-    desc: "Premium automotive film for privacy, UV rejection, and heat reduction.",
-    benefits: ["99% UV rejection", "Heat reduction", "Enhanced privacy"],
+    abbr: "TINT",
+    desc: "Premium automotive film engineered for maximum UV rejection, heat reduction, and visual privacy.",
+    benefits: ["99% UV rejection", "Significant heat reduction", "Enhanced privacy & security"],
     price: "$350",
-    duration: "4-6 hours"
+    duration: "4–6 hours",
   },
   {
+    num: "05",
     name: "Full Detail",
-    desc: "A complete interior/exterior restoration. Every surface.",
-    benefits: ["Deep clean exterior", "Interior revitalization", "Engine bay detail"],
+    abbr: "DETAIL",
+    desc: "A complete interior and exterior restoration touching every surface — paint, glass, leather, rubber, and trim.",
+    benefits: ["Deep exterior decontamination", "Interior steam clean", "Engine bay detailing"],
     price: "$450",
-    duration: "6-8 hours"
+    duration: "6–8 hours",
   },
   {
+    num: "06",
     name: "Interior Restoration",
-    desc: "Complete interior revitalization — leather conditioning, steam cleaning, panel restoration.",
-    benefits: ["Leather treatment", "Odor removal", "Stain extraction"],
+    abbr: "INTERIOR",
+    desc: "Comprehensive cabin revitalization — leather conditioning, stain extraction, steam cleaning, and panel restoration.",
+    benefits: ["Leather conditioning & repair", "Professional stain extraction", "Odor elimination treatment"],
     price: "$600",
-    duration: "1 day"
-  }
+    duration: "1 day",
+  },
 ];
 
-const portfolio = [
-  { img: port1, name: "McLaren 720S", service: "Full Body PPF", year: "2023" },
-  { img: port2, name: "Lamborghini Huracan", service: "Ceramic Coating", year: "2024" },
-  { img: port3, name: "Rolls Royce Ghost", service: "Interior Restoration", year: "2022" },
-  { img: port4, name: "Ferrari Roma", service: "Paint Correction", year: "2023" },
+const PORTFOLIO = [
+  { img: port1, name: "McLaren 720S", service: "Full Body PPF", year: "2023", wide: true },
+  { img: port2, name: "Lamborghini Huracán", service: "Ceramic Coating", year: "2024", wide: false },
+  { img: port3, name: "Rolls-Royce Ghost", service: "Interior Restoration", year: "2022", wide: false },
+  { img: port4, name: "Ferrari Roma", service: "Paint Correction", year: "2023", wide: true },
 ];
+
+const TESTIMONIALS = [
+  {
+    quote: "When I purchased my GT3 RS, I didn't want just anyone touching the paint. Blackline treated the car with more respect than the dealership. The PPF is completely invisible.",
+    name: "David K.",
+    vehicle: "2024 Porsche 911 GT3 RS",
+  },
+  {
+    quote: "The paint correction result was unbelievable. Swirls I thought were permanent are completely gone. The ceramic coating made it look better than the day I picked it up from the factory.",
+    name: "Marcus T.",
+    vehicle: "2023 Lamborghini Urus",
+  },
+  {
+    quote: "I've used detailers in three cities. None of them come close. The process, the communication, the result — it's a different level entirely.",
+    name: "Rachel C.",
+    vehicle: "2022 Ferrari Roma",
+  },
+];
+
+const STANDARDS = [
+  {
+    heading: "XPEL & 3M Certified",
+    body: "Exclusive access to the highest tier of automotive films, installed by factory-certified technicians.",
+  },
+  {
+    heading: "Climate-Controlled Studio",
+    body: "ISO-certified clean room environments guarantee contamination-free ceramic and film applications.",
+  },
+  {
+    heading: "Concierge Logistics",
+    body: "Enclosed, fully-insured transport available for pickup and delivery anywhere in the metro area.",
+  },
+  {
+    heading: "Lifetime Support",
+    body: "Every coating and film package includes complimentary annual inspections and maintenance guidance.",
+  },
+];
+
+// ─── micro components ────────────────────────────────────────────────────────
+
+function FadeIn({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-[#C9A86A] text-[11px] tracking-[0.3em] uppercase mb-5 font-sans font-medium">
+      {children}
+    </p>
+  );
+}
+
+function SectionHeading({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return (
+    <h2 className={`font-serif text-4xl md:text-5xl lg:text-6xl text-[#F5F5F5] leading-[1.05] tracking-tight ${className}`}>
+      {children}
+    </h2>
+  );
+}
+
+// ─── container ───────────────────────────────────────────────────────────────
+
+const CX = "max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16";
+
+// ─── page ────────────────────────────────────────────────────────────────────
 
 export default function Home() {
   return (
-    <div className="bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-      {/* Hero Section */}
-      <section className="relative h-[100dvh] flex items-center justify-center overflow-hidden">
+    <div className="bg-[#070707] text-[#F5F5F5] overflow-x-hidden">
+
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
+      <section className="relative h-[100dvh] min-h-[640px] flex flex-col justify-center overflow-hidden">
+        {/* Background image with controlled overlay */}
         <div className="absolute inset-0 z-0">
-          <img src={heroImg} alt="Porsche 911 Detail" className="w-full h-full object-cover opacity-60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+          <img
+            src={heroImg}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center"
+            style={{ opacity: 0.45 }}
+          />
+          {/* Top fade — darkens behind the nav */}
+          <div className="absolute inset-0" style={{
+            background: "linear-gradient(to bottom, #070707 0%, transparent 30%, transparent 60%, #070707 100%)"
+          }} />
         </div>
-        
-        <div className="container relative z-10 mx-auto px-6 text-center mt-20">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
+
+        {/* Content */}
+        <div className={`${CX} relative z-10 pt-24`}>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-primary tracking-[0.3em] text-sm md:text-base font-medium mb-6 uppercase"
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="text-[#C9A86A] text-[11px] tracking-[0.4em] uppercase mb-6 font-sans"
           >
             Obsessive Craftsmanship
-          </motion.h2>
-          <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="font-serif text-5xl md:text-7xl lg:text-8xl xl:text-9xl text-white tracking-widest mb-10 leading-none"
+            transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="font-serif text-[clamp(3.5rem,10vw,8rem)] leading-none tracking-[0.06em] text-[#F5F5F5] mb-4"
           >
             BLACKLINE
           </motion.h1>
-          <motion.div 
+
+          <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6"
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="text-[#8A8A8A] text-base md:text-lg max-w-sm mb-10 leading-relaxed"
           >
-            <Link href="/quote" className="bg-primary text-primary-foreground px-10 py-4 text-sm font-medium tracking-wider hover:bg-white hover:text-background transition-colors w-full sm:w-auto">
-              REQUEST A QUOTE
+            Precision automotive protection for vehicles that deserve nothing less.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 1 }}
+            className="flex flex-col sm:flex-row gap-4"
+          >
+            <Link
+              href="/quote"
+              data-testid="button-hero-quote"
+              className="inline-flex items-center justify-center bg-[#C9A86A] text-[#070707] px-8 py-4 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-[#b8974f] transition-colors duration-200"
+            >
+              Request a Quote
             </Link>
-            <a href="#portfolio" className="border border-border bg-transparent text-white px-10 py-4 text-sm font-medium tracking-wider hover:border-primary hover:text-primary transition-colors w-full sm:w-auto">
-              VIEW PORTFOLIO
+            <a
+              href="#portfolio"
+              data-testid="button-hero-portfolio"
+              className="inline-flex items-center justify-center border border-[#1A1A1A] text-[#8A8A8A] px-8 py-4 text-[11px] tracking-[0.2em] uppercase hover:border-[#C9A86A] hover:text-[#C9A86A] transition-colors duration-200"
+            >
+              View Portfolio
             </a>
           </motion.div>
         </div>
 
-        <motion.div 
+        {/* Stats — pinned to bottom, always above the image */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.2 }}
-          className="absolute bottom-12 left-0 right-0 z-10"
+          transition={{ duration: 0.8, delay: 1.3 }}
+          className="absolute bottom-0 left-0 right-0 z-10 border-t border-[#1A1A1A]"
         >
-          <div className="container mx-auto px-6 grid grid-cols-3 gap-4 border-t border-border/50 pt-8 max-w-4xl">
-            <div className="text-center">
-              <p className="text-2xl md:text-3xl font-serif text-white mb-1">500+</p>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">Vehicles Protected</p>
-            </div>
-            <div className="text-center border-l border-r border-border/50">
-              <p className="text-2xl md:text-3xl font-serif text-white mb-1">12</p>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">Years of Mastery</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl md:text-3xl font-serif text-white mb-1">100%</p>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">Satisfaction</p>
-            </div>
+          <div className={`${CX} grid grid-cols-3`}>
+            {[
+              { value: "500+", label: "Vehicles Protected" },
+              { value: "12", label: "Years of Mastery" },
+              { value: "100%", label: "Satisfaction" },
+            ].map((stat, i) => (
+              <div
+                key={stat.label}
+                className={`py-6 text-center ${i > 0 ? "border-l border-[#1A1A1A]" : ""}`}
+              >
+                <p className="font-serif text-2xl md:text-3xl text-[#F5F5F5] mb-1">{stat.value}</p>
+                <p className="text-[#8A8A8A] text-[10px] tracking-[0.2em] uppercase">{stat.label}</p>
+              </div>
+            ))}
           </div>
         </motion.div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-32 md:py-48 px-6 border-b border-border">
-        <div className="container mx-auto">
-          <div className="mb-24 md:flex justify-between items-end">
-            <div className="max-w-2xl">
-              <h2 className="text-primary tracking-[0.2em] text-sm uppercase mb-4">Our Services</h2>
-              <h3 className="font-serif text-4xl md:text-6xl text-white">Engineered Beauty.</h3>
-            </div>
-            <p className="text-muted-foreground max-w-md mt-6 md:mt-0 text-sm md:text-base">
-              We do not compromise. Every service is executed with absolute precision, utilizing the world's most advanced chemical and physical protection systems.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, idx) => (
-              <motion.div 
-                key={service.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="bg-card border border-border p-10 hover:border-primary/50 transition-colors group cursor-pointer"
-              >
-                <h4 className="font-serif text-2xl text-white mb-4 group-hover:text-primary transition-colors">{service.name}</h4>
-                <p className="text-muted-foreground text-sm mb-8 h-10">{service.desc}</p>
-                <ul className="space-y-3 mb-10 border-t border-border pt-6">
-                  {service.benefits.map((benefit, i) => (
-                    <li key={i} className="text-sm text-foreground flex items-center gap-3">
-                      <div className="w-1 h-1 bg-primary rounded-full"></div>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex justify-between items-end mt-auto">
-                  <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Starting At</p>
-                    <p className="font-serif text-xl text-white">{service.price}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Duration</p>
-                    <p className="text-sm text-white">{service.duration}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Portfolio Section */}
-      <section id="portfolio" className="py-32 md:py-48 px-6 bg-[#0a0a0a]">
-        <div className="container mx-auto">
-          <div className="text-center mb-24">
-            <h2 className="text-primary tracking-[0.2em] text-sm uppercase mb-4">The Gallery</h2>
-            <h3 className="font-serif text-4xl md:text-6xl text-white">Museum Quality.</h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {portfolio.map((item, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, scale: 0.98 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="group relative overflow-hidden"
-              >
-                <div className="aspect-[4/3] overflow-hidden bg-card">
-                  <img src={item.img} alt={item.name} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-80 group-hover:opacity-100" />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/90 to-transparent">
-                  <p className="text-primary text-xs tracking-widest uppercase mb-2">{item.service} &bull; {item.year}</p>
-                  <h4 className="font-serif text-3xl text-white">{item.name}</h4>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          
-          <div className="mt-20 text-center">
-            <Link href="/booking" className="inline-block border-b border-primary text-primary pb-1 tracking-widest uppercase text-sm hover:text-white hover:border-white transition-colors">
-              Book Your Vehicle
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="py-32 md:py-48 px-6 border-y border-border relative overflow-hidden">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 gap-20 items-center">
+      {/* ── SERVICES ─────────────────────────────────────────────────── */}
+      <section id="services" className="py-28 md:py-40 border-t border-[#1A1A1A]">
+        <div className={CX}>
+          {/* Header */}
+          <FadeIn className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-20">
             <div>
-              <h2 className="text-primary tracking-[0.2em] text-sm uppercase mb-4">The Standard</h2>
-              <h3 className="font-serif text-4xl md:text-6xl text-white mb-10 leading-tight">Precision that takes 72 hours.</h3>
-              <p className="text-muted-foreground mb-8 text-lg font-light leading-relaxed">
-                We do not rush. We do not cut corners. A true paint correction and protection process is a labor-intensive operation that requires specialized environments, lighting, and decades of combined experience.
+              <Label>Our Services</Label>
+              <SectionHeading>Engineered Beauty.</SectionHeading>
+            </div>
+            <p className="text-[#8A8A8A] text-sm leading-relaxed max-w-xs md:text-right md:pb-1">
+              Every service executed with absolute precision, utilizing the world's most advanced protection systems.
+            </p>
+          </FadeIn>
+
+          {/* Service grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1A1A1A]">
+            {SERVICES.map((s, i) => (
+              <FadeIn key={s.num} delay={i * 0.06}>
+                <div className="bg-[#070707] p-8 md:p-10 group hover:bg-[#0d0d0d] transition-colors duration-300 h-full flex flex-col">
+                  <div className="flex items-start justify-between mb-6">
+                    <span className="text-[#1A1A1A] font-serif text-4xl leading-none select-none">{s.num}</span>
+                    <span className="text-[#C9A86A] text-[10px] tracking-[0.25em] uppercase">{s.abbr}</span>
+                  </div>
+                  <h3 className="font-serif text-xl text-[#F5F5F5] mb-3 group-hover:text-[#C9A86A] transition-colors duration-300">
+                    {s.name}
+                  </h3>
+                  <p className="text-[#8A8A8A] text-sm leading-relaxed mb-6 flex-1">{s.desc}</p>
+                  <ul className="space-y-2 mb-8 pt-5 border-t border-[#1A1A1A]">
+                    {s.benefits.map((b) => (
+                      <li key={b} className="flex items-center gap-3 text-[13px] text-[#8A8A8A]">
+                        <span className="w-1 h-1 bg-[#C9A86A] rounded-full flex-shrink-0" />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex items-end justify-between pt-4 border-t border-[#1A1A1A]">
+                    <div>
+                      <p className="text-[10px] text-[#8A8A8A] tracking-[0.2em] uppercase mb-1">Starting At</p>
+                      <p className="font-serif text-xl text-[#F5F5F5]">{s.price}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] text-[#8A8A8A] tracking-[0.2em] uppercase mb-1">Duration</p>
+                      <p className="text-[13px] text-[#F5F5F5]">{s.duration}</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeIn className="mt-14 flex justify-center">
+            <Link
+              href="/quote"
+              data-testid="button-services-quote"
+              className="border border-[#1A1A1A] text-[#8A8A8A] px-10 py-4 text-[11px] tracking-[0.2em] uppercase hover:border-[#C9A86A] hover:text-[#C9A86A] transition-colors duration-200"
+            >
+              Get an Estimate
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ── PORTFOLIO ────────────────────────────────────────────────── */}
+      <section id="portfolio" className="py-28 md:py-40 border-t border-[#1A1A1A]">
+        <div className={CX}>
+          <FadeIn className="text-center mb-20">
+            <Label>The Gallery</Label>
+            <SectionHeading>Museum Quality.</SectionHeading>
+          </FadeIn>
+
+          {/* 2-column masonry-style grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {PORTFOLIO.map((item, i) => (
+              <FadeIn key={i} delay={i * 0.08}>
+                <div
+                  className={`group relative overflow-hidden bg-[#111111] ${item.wide ? "md:col-span-1" : "md:col-span-1"}`}
+                  style={{ aspectRatio: i === 0 || i === 3 ? "16/10" : "4/3" }}
+                  data-testid={`portfolio-item-${i}`}
+                >
+                  <img
+                    src={item.img}
+                    alt={`${item.name} — ${item.service}`}
+                    className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-[1.04]"
+                    style={{ opacity: 0.75 }}
+                  />
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-[#070707]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Caption — always visible at bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#070707]/90 to-transparent">
+                    <p className="text-[#C9A86A] text-[10px] tracking-[0.25em] uppercase mb-1.5">
+                      {item.service} &middot; {item.year}
+                    </p>
+                    <h4 className="font-serif text-xl text-[#F5F5F5]">{item.name}</h4>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeIn className="mt-14 flex justify-center">
+            <Link
+              href="/booking"
+              data-testid="button-portfolio-book"
+              className="inline-flex items-center gap-3 text-[#C9A86A] text-[11px] tracking-[0.25em] uppercase border-b border-[#C9A86A]/40 pb-1 hover:border-[#C9A86A] transition-colors duration-200"
+            >
+              Reserve Your Appointment
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ── STANDARDS ────────────────────────────────────────────────── */}
+      <section className="py-28 md:py-40 border-t border-[#1A1A1A] bg-[#070707]">
+        <div className={CX}>
+          <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-start">
+            <FadeIn>
+              <Label>The Standard</Label>
+              <SectionHeading className="mb-8">
+                Precision that<br />takes 72 hours.
+              </SectionHeading>
+              <p className="text-[#8A8A8A] text-sm leading-relaxed max-w-sm">
+                We do not rush. A true paint correction and protection process is a labor-intensive operation requiring specialized environments, controlled lighting, and decades of combined experience.
               </p>
-              <div className="space-y-6">
-                <div className="border-l border-primary pl-6">
-                  <h5 className="text-white font-serif text-xl mb-2">XPEL & 3M Certified</h5>
-                  <p className="text-muted-foreground text-sm">Exclusive access to the highest tier of automotive films, applied by factory-trained artisans.</p>
-                </div>
-                <div className="border-l border-primary pl-6">
-                  <h5 className="text-white font-serif text-xl mb-2">Concierge Logistics</h5>
-                  <p className="text-muted-foreground text-sm">Enclosed, insured transport available for pickup and delivery to your residence or facility.</p>
-                </div>
-                <div className="border-l border-primary pl-6">
-                  <h5 className="text-white font-serif text-xl mb-2">Climate Controlled Studio</h5>
-                  <p className="text-muted-foreground text-sm">ISO-certified clean room environments ensure flawless ceramic and film applications without contamination.</p>
-                </div>
+            </FadeIn>
+
+            <FadeIn delay={0.15}>
+              <div className="space-y-8">
+                {STANDARDS.map((s, i) => (
+                  <div key={i} className="flex gap-6">
+                    <div className="flex-shrink-0 pt-1">
+                      <div className="w-[1px] h-full min-h-[48px] bg-[#C9A86A]" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-[17px] text-[#F5F5F5] mb-2">{s.heading}</h3>
+                      <p className="text-[#8A8A8A] text-sm leading-relaxed">{s.body}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-            <div className="hidden md:block">
-              {/* Abstract luxury shapes or just large typography */}
-              <div className="w-full h-full min-h-[500px] border border-border p-12 flex flex-col justify-between">
-                <div className="text-8xl font-serif text-border opacity-50">&ldquo;</div>
-                <p className="text-2xl font-serif text-white leading-relaxed italic relative z-10">
-                  When I purchased my GT3 RS, I didn't want just anyone touching the paint. Blackline treated the car with more respect than the dealership did. The PPF is completely invisible.
-                </p>
-                <div className="mt-8">
-                  <p className="text-primary tracking-widest uppercase text-sm mb-1">David K.</p>
-                  <p className="text-muted-foreground text-xs">2024 Porsche 911 GT3 RS</p>
-                </div>
-              </div>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
 
-      {/* Quote CTA */}
-      <section className="relative py-48 px-6 flex items-center justify-center text-center">
-        <div className="absolute inset-0 z-0">
-          <img src={ctaImg} alt="Luxury Detailing" className="w-full h-full object-cover opacity-40" />
-          <div className="absolute inset-0 bg-background/80"></div>
+      {/* ── TESTIMONIALS ─────────────────────────────────────────────── */}
+      <section className="py-28 md:py-40 border-t border-[#1A1A1A]">
+        <div className={CX}>
+          <FadeIn className="text-center mb-20">
+            <Label>Client Voices</Label>
+            <SectionHeading>Trusted by collectors.</SectionHeading>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#1A1A1A]">
+            {TESTIMONIALS.map((t, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-[#070707] p-8 md:p-10 flex flex-col h-full">
+                  <span className="font-serif text-5xl text-[#1A1A1A] leading-none mb-6 select-none">&ldquo;</span>
+                  <p className="text-[#8A8A8A] text-sm leading-relaxed flex-1 italic mb-8">{t.quote}</p>
+                  <div className="pt-5 border-t border-[#1A1A1A]">
+                    <p className="text-[#C9A86A] text-[11px] tracking-[0.2em] uppercase mb-1">{t.name}</p>
+                    <p className="text-[#8A8A8A] text-xs">{t.vehicle}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
         </div>
-        
-        <div className="relative z-10 max-w-3xl mx-auto">
-          <h2 className="font-serif text-5xl md:text-7xl text-white mb-8">Your vehicle deserves perfection.</h2>
-          <p className="text-muted-foreground text-lg mb-12">Configure your custom protection package and receive an instant estimate.</p>
-          <Link href="/quote" className="bg-primary text-primary-foreground px-12 py-5 text-sm font-medium tracking-widest hover:bg-white hover:text-background transition-all inline-block">
-            BUILD YOUR PACKAGE
-          </Link>
+      </section>
+
+      {/* ── CTA ──────────────────────────────────────────────────────── */}
+      <section className="border-t border-[#1A1A1A] relative overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={ctaImg}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover"
+            style={{ opacity: 0.3 }}
+          />
+          <div className="absolute inset-0" style={{
+            background: "linear-gradient(to bottom, #070707 0%, transparent 40%, #070707 100%)"
+          }} />
+        </div>
+
+        <div className={`${CX} relative z-10 py-32 md:py-48 text-center`}>
+          <FadeIn>
+            <Label>Begin Here</Label>
+            <SectionHeading className="mb-6 max-w-2xl mx-auto">
+              Your vehicle deserves perfection.
+            </SectionHeading>
+            <p className="text-[#8A8A8A] text-sm leading-relaxed max-w-sm mx-auto mb-12">
+              Configure your custom protection package and receive a precise estimate in minutes.
+            </p>
+            <Link
+              href="/quote"
+              data-testid="button-cta-quote"
+              className="inline-flex items-center justify-center bg-[#C9A86A] text-[#070707] px-10 py-4 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-[#b8974f] transition-colors duration-200"
+            >
+              Build Your Package
+            </Link>
+          </FadeIn>
         </div>
       </section>
     </div>

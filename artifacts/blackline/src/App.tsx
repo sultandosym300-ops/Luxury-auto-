@@ -2,18 +2,21 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
 
+import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Quote from "@/pages/Quote";
 import Booking from "@/pages/Booking";
+
 import AdminLayout from "@/components/layout/AdminLayout";
+import AdminLogin from "@/pages/admin/AdminLogin";
 import Dashboard from "@/pages/admin/Dashboard";
 import BookingsList from "@/pages/admin/BookingsList";
 import CustomersList from "@/pages/admin/CustomersList";
 import ServicesList from "@/pages/admin/ServicesList";
 import TechniciansList from "@/pages/admin/TechniciansList";
 import Analytics from "@/pages/admin/Analytics";
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -37,7 +40,7 @@ function AdminRoutes() {
 
 function PublicRoutes() {
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex flex-col min-h-[100dvh] bg-[#070707]">
       <Navbar />
       <main className="flex-1">
         <Switch>
@@ -55,9 +58,9 @@ function PublicRoutes() {
 function Router() {
   return (
     <Switch>
-      <Route path="/admin/*" component={AdminRoutes} />
-      <Route path="/admin" component={AdminRoutes} />
-      <Route path="/*" component={PublicRoutes} />
+      <Route path="/admin/login" component={AdminLogin} />
+      <Route path="/admin/*?" component={AdminRoutes} />
+      <Route path="/*?" component={PublicRoutes} />
     </Switch>
   );
 }

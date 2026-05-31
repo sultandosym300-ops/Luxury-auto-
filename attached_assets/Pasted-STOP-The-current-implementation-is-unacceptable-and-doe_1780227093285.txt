@@ -1,0 +1,98 @@
+STOP.
+
+The current implementation is unacceptable and does not meet premium agency standards.
+
+DO NOT add more features until the existing UI/UX is completely rebuilt.
+
+Current issues:
+
+- Layout is broken
+- Images overlap content
+- Typography hierarchy is inconsistent
+- Sections are not aligned
+- Content spills outside containers
+- Navigation looks unfinished
+- Admin link is publicly visible
+- Spacing is random
+- Mobile responsiveness is poor
+- The website looks AI-generated and template-like
+- The design does not justify a $5,000+ project price
+
+REBUILD THE ENTIRE FRONTEND DESIGN SYSTEM.
+
+Requirements:
+
+1. Create a professional 12-column grid system.
+2. Every section must have proper max-width containers.
+3. No image may overlap text unless intentionally designed.
+4. Remove oversized full-screen images.
+5. Create premium visual rhythm using whitespace.
+6. Use proper typography scale:
+   - Hero
+   - Section Heading
+   - Card Heading
+   - Body Text
+   - Caption
+
+7. Hide Admin access completely from public navigation.
+8. Remove all public admin buttons and links.
+9. Admin routes must only be accessible through direct URL and authentication.
+10. No "Create Admin" button anywhere on the public website.
+
+DESIGN REFERENCE LEVEL:
+
+- Porsche
+- Apple
+- Rivian
+- Tesla
+- Stripe
+- Linear
+- McLaren
+- Singer Vehicle Design
+
+The website must feel like a luxury automotive brand, not a SaaS template.
+
+VISUAL RULES:
+
+- Large margins
+- Large whitespace
+- Minimalist layouts
+- Strong photography presentation
+- Perfect alignment
+- Clean card design
+- No overlapping sections
+- No broken responsive layouts
+- Every page should look intentional
+
+BOOKING SYSTEM FIXES:
+
+- Confirm Booking button currently appears broken.
+- Add loading state.
+- Disable button while processing.
+- Show success screen after booking.
+- Automatically redirect to confirmation page.
+- Save booking to Supabase correctly.
+- Show booking reference number.
+
+ADMIN SYSTEM FIXES:
+
+- Login currently does not work correctly.
+- Verify Supabase authentication.
+- Verify role checks.
+- Verify session persistence.
+- Verify route protection.
+- Verify admin dashboard access.
+
+Before finishing:
+
+1. Run the application.
+2. Test every route.
+3. Test mobile view.
+4. Test booking flow.
+5. Test admin login.
+6. Fix every visual issue found.
+7. Produce a clean production-ready build.
+
+Do not tell me what you changed.
+
+Actually fix the problems and verify them.
