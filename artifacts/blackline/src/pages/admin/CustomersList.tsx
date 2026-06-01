@@ -5,7 +5,7 @@ import type { Customer } from "@/lib/api";
 function initials(c: Customer) {
   const f = c.firstName?.[0] ?? "";
   const l = c.lastName?.[0] ?? "";
-  return (f + l).toUpperCase() || c.email?.[0]?.toUpperCase() ?? "?";
+  return (f + l).toUpperCase() || c.email?.[0]?.toUpperCase() || "?";
 }
 
 export default function CustomersList() {
