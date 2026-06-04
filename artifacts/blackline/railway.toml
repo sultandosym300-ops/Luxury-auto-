@@ -1,0 +1,10 @@
+[build]
+builder = "nixpacks"
+buildCommand = "cd ../.. && PORT=3000 BASE_PATH=/ NODE_ENV=production pnpm install --frozen-lockfile && pnpm --filter @workspace/blackline run build"
+
+[deploy]
+startCommand = "BASE_PATH=/ pnpm run serve"
+healthcheckPath = "/"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
