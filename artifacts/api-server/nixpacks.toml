@@ -1,5 +1,2 @@
-[variables]
-NIXPACKS_NODE_VERSION = "24"
-
 [phases.install]
 cmds = ["cd ../.. && pnpm install --frozen-lockfile"]
