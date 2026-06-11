@@ -8,6 +8,18 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+const allowedOrigins: Set<string> = new Set(
+  (process.env.ALLOWED_ORIGINS ?? "")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean),
+);
+
+if (process.env.NODE_ENV !== "production") {
+  allowedOrigins.add("http://localhost:3000");
+  allowedOrigins.add("http://localhost:5173");
+}
+
 app.use(
   pinoHttp({
     logger,
@@ -22,7 +34,18 @@ app.use(
   }),
 );
 
-app.use(cors({ credentials: true, origin: true }));
+app.use(
+  cors({
+    credentials: true,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.has(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin not allowed — ${origin}`));
+      }
+    },
+  }),
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
