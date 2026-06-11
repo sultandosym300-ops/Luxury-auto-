@@ -1,7 +1,7 @@
 {
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "NODE_ENV=production pnpm --filter @workspace/blackline run build",
-  "outputDirectory": "artifacts/blackline/dist/public",
+  "outputDirectory": "artifacts/blackline/dist",
   "rewrites": [
     {
       "source": "/api/:path*",
